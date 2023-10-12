@@ -90,7 +90,7 @@ class VOCDetection(data.Dataset):
             (default: 'VOC2007')
     """
 
-    def __init__(self, root, name='trainval',
+    def __init__(self, root, name='train',
                  transform=None, target_transform=VOCAnnotationTransform(),
                  ):
         self.root = root

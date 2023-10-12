@@ -14,7 +14,7 @@ parser.add_argument('--trained_model', default='../weights/ssd300_COCO_10000.pth
                     type=str, help='Trained state_dict file path to open')
 parser.add_argument('--save_folder', default='../results/eval/', type=str,
                     help='Dir to save results')
-parser.add_argument('--visual_threshold', default=0.6, type=float,
+parser.add_argument('--visual_threshold', default=0.4, type=float,
                     help='Final confidence threshold')
 parser.add_argument('--cuda', default=True, type=bool,
                     help='Use cuda to train model')
@@ -44,6 +44,21 @@ def show_detection(image, bndnox, text):
     cv.putText(image, str(text), (x + 10, y + 10), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     return image
 
+def visualize_set(save_folder, testset):
+    from matplotlib import pyplot as plt
+
+    num_images = len(testset)
+    for i in range(num_images):
+        print('Testing image {:d}/{:d}....'.format(i+1, num_images))
+        img = testset.pull_image(i)
+        img_id, annotation = testset.pull_anno(i)
+        for bndbox in annotation:
+            img = show_detection(img, bndbox, "")
+        plt.imshow(img)
+        plt.show()
+
+
+
 def test_net(save_folder, net, cuda, testset, transform, thresh):
     # dump predictions and assoc. ground truth to text file for now
     from matplotlib import pyplot as plt
@@ -68,7 +83,7 @@ def test_net(save_folder, net, cuda, testset, transform, thresh):
         pred_num = 0
         for i in range(detections.size(1)):
             j = 0
-            while detections[0, i, j, 0] >= 0.6:
+            while detections[0, i, j, 0] >= 0.1:
                 score = detections[0, i, j, 0].item()
                 label_name = labelmap[i-1]
                 pt = (detections[0, i, j, 1:]*scale).cpu().numpy()
@@ -103,10 +118,10 @@ def test_voc():
         net = net.cuda()
         cudnn.benchmark = True
     # evaluation
+    # visualize_set(args.save_folder, testset)
     test_net(args.save_folder, net, args.cuda, testset,
              BaseTransform(net.size, (104, 117, 123)),
              thresh=args.visual_threshold)
 
 if __name__ == '__main__':
-
     test_voc()

@@ -52,6 +52,14 @@ parser.add_argument('--save_folder', default='..//weights/',
                     help='Directory for saving checkpoint models')
 args = parser.parse_args()
 
+loss_history = []
+epoch_history = []
+
+def show_train_process(loss_history, epoch_history):
+    from matplotlib import pyplot as plt
+    plt.plot(epoch_history, loss_history)
+    plt.show()
+    plt.pause(10)
 
 if torch.cuda.is_available():
     if args.cuda:
@@ -170,6 +178,8 @@ def train():
         conf_loss += loss_c.item()
 
         if iteration % 10 == 0:
+            loss_history.append(loss.item())
+            epoch_history.append(iteration)
             print('timer: %.4f sec.' % (t1 - t0))
             print('iter ' + repr(iteration) + ' || Loss: %.4f ||' % (loss.item()), end=' ')
 
@@ -177,10 +187,12 @@ def train():
         #     update_vis_plot(iteration, loss_l.data[0], loss_c.data[0],
         #                     iter_plot, epoch_plot, 'append')
 
-        if iteration != 0 and iteration % 1000 == 0:
+        if iteration != 0 and iteration % 100 == 0:
             print('Saving state, iter:', iteration)
-            torch.save(ssd_net.state_dict(), 'weights/ssd300_COCO_' +
+            show_train_process(loss_history, epoch_history)
+            torch.save(ssd_net.state_dict(), '../weights/ssd300_COCO_' +
                        repr(iteration) + '.pth')
+
     torch.save(ssd_net.state_dict(),
                args.save_folder + '' + args.dataset + '.pth')
 
