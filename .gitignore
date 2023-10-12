@@ -137,9 +137,8 @@ dmypy.json
 
 #my own
 ssd.pytorch/
-dataset/
-
+results/
 
 #results
-.zip
-.pth
+*.zip
+*.pth
