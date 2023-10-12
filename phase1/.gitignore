@@ -140,6 +140,8 @@ dmypy.json
 .dataset/
 results/
 ./src/ssd300_120000
+!.weights/vgg16_reducedfc.pth
+.weights/
 
 #results
 .zip
