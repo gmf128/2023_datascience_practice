@@ -1,0 +1,13 @@
+path: images
+
+train: train
+val: val
+test: test
+
+names:
+  0: badge
+  1: person
+  2: glove
+  3: wrongglove
+  4: operatingbar
+  5: powerchecker
