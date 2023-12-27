@@ -43,9 +43,7 @@ pip install ultralytics
 
 `src\train.py`训练，第一次运行时会下载预训练权重文件
 
-`src\test.py`必须在训练后运行，否则缺少权重文件。或从此链接下载权重文件后放置在任意位置，并修改test.py中的文件读取权重的路径： https://box.nju.edu.cn/f/46484a6932cd4df5a30b/?dl=1 
-
-
+`src\test.py`必须在训练后运行，否则缺少权重文件。或从此链接下载权重文件后放置在任意位置，并修改test.py中的文件读取权重的路径： https://box.nju.edu.cn/f/38c0f1c5f9194d4dbcd5/?dl=1 
 
 **说明：**
 
